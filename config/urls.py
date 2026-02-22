@@ -15,8 +15,27 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+from django.http import HttpResponse
+
+# یه تابع ساده برای صفحه اصلی
+def home(request):
+    return HttpResponse("""
+        <h1>ربات فروشگاهی تلگرام</h1>
+        <p>پروژه در حال توسعه است...</p>
+        <p>برای ورود به ادمین: <a href="/admin/">/admin/</a></p>
+    """)
 
 urlpatterns = [
+    path('', home),  # صفحه اصلی
     path('admin/', admin.site.urls),
+    # path('shop/', include('shop.urls')),  # بعداً فعال می‌کنیم
+    # path('wallet/', include('wallet.urls')),  # بعداً فعال می‌کنیم
+    # path('bot/', include('bot.urls')),  # بعداً فعال می‌کنیم
 ]
+
+# اضافه کردن مسیرهای مدیا برای حالت توسعه
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
